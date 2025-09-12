@@ -8,7 +8,7 @@ import (
 )
 
 func (h *Handler) GetItems(c *gin.Context) {
-	resp, err := http.Get("https://ddragon.leagueoflegends.com/cdn/13.1.1/data/en_US/champion.json")
+	resp, err := http.Get(h.CDN + "item.json")
 	if err != nil {
 		h.Audit.Info("GET /champions - failed to fetch champions")
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch champions"})

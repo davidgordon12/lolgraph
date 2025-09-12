@@ -36,6 +36,5 @@ func (h *Handler) RegisterRoutes(router *gin.Engine) {
 	})
 
 	router.GET("/champions", h.GetChampions)
-	router.GET("/items", h.GetChampions)
-	router.GET("/runes", h.GetChampions)
+	router.GET("/items", h.GetItems)
 }
