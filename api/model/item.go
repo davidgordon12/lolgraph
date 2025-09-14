@@ -1,7 +1,7 @@
 package model
 
 type Item struct {
-	ID          int       `json:"id"`
+	ID          string    `json:"id"`
 	Name        string    `json:"name"`
 	Description string    `json:"description"`
 	Stats       ItemStats `json:"stats"`
@@ -9,10 +9,9 @@ type Item struct {
 }
 
 type ItemStats struct {
-	FlatMagicDamageMod         int
-	FlatPhysicalDamageMod      int
-	FlatMagicPenetration       int
-	FlatPhysicalPenetration    int
-	PercentMagicPenetration    int
-	PercentPhysicalPenetration int
+	FlatArmorMod          int
+	FlatSpellBlockMod     int
+	FlatMagicDamageMod    int
+	FlatPhysicalDamageMod int
+	PercentAttackSpeedMod float64
 }

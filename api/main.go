@@ -24,8 +24,7 @@ func main() {
 	router := gin.New()
 	router.Use(etc.AuditLogger(audit), gin.Recovery())
 
-	h := handler.NewHandler(audit)
-	h.RegisterRoutes(router)
+	handler.RegisterRoutes(router)
 
 	audit.Info("Starting server on port :8080")
 	router.Run(":8080")
