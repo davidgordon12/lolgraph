@@ -17,8 +17,8 @@ type ItemData struct {
 	Data map[string]model.Item `json:"data"`
 }
 
-func NewItemService() *ItemService {
-	return &ItemService{}
+func NewItemService(a *a.Audit) *ItemService {
+	return &ItemService{audit: a}
 }
 
 func (_itemService ItemService) GetItems() (*[]model.Item, error) {

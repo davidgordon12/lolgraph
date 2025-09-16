@@ -8,9 +8,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetItems(c *gin.Context) {
-	_itemService := service.NewItemService()
-	itemData, err := _itemService.GetItems()
+type ItemHandler struct {
+	audit       *a.Audit
+	itemService *service.ItemService
+}
+
+func NewItemHandler(a *a.Audit) *ItemHandler {
+	return &ItemHandler{audit: a, itemService: service.NewItemService(a)}
+}
+
+func (h *ItemHandler) Get(c *gin.Context) {
+	itemData, err := h.itemService.GetItems()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err)
 	}
@@ -18,10 +26,11 @@ func GetItems(c *gin.Context) {
 	c.JSON(http.StatusOK, itemData)
 }
 
-func GetItemById(c *gin.Context, audit *a.Audit) {
+func (h *ItemHandler) GetById(c *gin.Context) {
 	id := c.Param("id")
-	_itemService := service.NewItemService()
-	itemData, err := _itemService.GetItemById(id)
+	h.audit.Debug("Got item request for id of %s", id)
+
+	itemData, err := h.itemService.GetItemById(id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err)
 	}
