@@ -13,5 +13,11 @@ type ItemStats struct {
 	FlatSpellBlockMod     int
 	FlatMagicDamageMod    int
 	FlatPhysicalDamageMod int
-	PercentAttackSpeedMod float64
+	FlatCritChanceMod     float32
+	PercentAttackSpeedMod float32
+
+	// These stats are not directly populated from the API call
+	PercentCritDamage       float64
+	PercentArmorPenetration float64
+	PercentMagicPenetration float64
 }
