@@ -3,9 +3,7 @@ package service
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"net/http"
-	"os"
 	"regexp"
 	"slices"
 	"strconv"
@@ -71,7 +69,6 @@ func (itemService ItemService) parseItemDescription(item *model.Item) {
 		armorPenetrationRegex := regexp.MustCompile(`<attention>(\d+)%<\/attention>\sArmor\sPenetration`)
 		armorPenetrationString := armorPenetrationRegex.FindString(item.Description)
 		armorPenetration := percentRegex.FindString(armorPenetrationString)
-		fmt.Fprintf(os.Stdout, "%s", armorPenetration)
 
 		res, _ := strconv.ParseFloat(armorPenetration, 64)
 		item.Stats.PercentArmorPenetration = res

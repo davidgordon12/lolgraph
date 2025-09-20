@@ -29,6 +29,7 @@ func (h *ChampionHandler) Get(c *gin.Context) {
 func (h *ChampionHandler) GetById(c *gin.Context) {
 	id := c.Param("id")
 	h.audit.Debug("Got champion request for id of %s", id)
+
 	itemData, err := h.championService.GetChampionById(id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err)
