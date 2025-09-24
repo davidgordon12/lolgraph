@@ -1,0 +1,7 @@
+<div class="p-6">
+    <ul class="list-disc list-inside space-y-2">
+        @for (item of items(); track item.id) {
+        <li class="bg-gray-100 p-3 rounded-lg shadow-sm">{{ item.name }}</li>
+        }
+    </ul>
+</div>
