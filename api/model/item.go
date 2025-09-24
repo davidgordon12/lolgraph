@@ -4,6 +4,7 @@ type Item struct {
 	ID          string    `json:"id"`
 	Name        string    `json:"name"`
 	Description string    `json:"description"`
+	Image       Image     `json:"image"`
 	Stats       ItemStats `json:"stats"`
 	Tags        []string  `json:"tags"`
 }
