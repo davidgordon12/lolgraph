@@ -10,7 +10,8 @@ import (
 )
 
 type ChampionService struct {
-	audit *a.Audit
+	version string
+	audit   *a.Audit
 }
 
 type ChampionData struct {
@@ -18,42 +19,22 @@ type ChampionData struct {
 }
 
 func NewChampionService(a *a.Audit) *ChampionService {
-	return &ChampionService{audit: a}
+	version := GetAPIVersion()
+	return &ChampionService{version: version, audit: a}
 }
 
-func (_championService ChampionService) GetChampions() (*[]model.Champion, error) {
-	version, err := http.Get("https://ddragon.leagueoflegends.com/api/versions.json")
-	if err != nil || version.StatusCode != http.StatusOK {
-		_championService.audit.Warn("Couldn't fetch latest version from ddragon - %v", err)
-		return nil, err
-	}
-	defer version.Body.Close()
-
-	var versions []string
-	if err := json.NewDecoder(version.Body).Decode(&versions); err != nil {
-		_championService.audit.Warn("Couldn't decode versions from ddragon - %v", err)
-		return nil, err
-	}
-
-	if len(versions) < 1 {
-		_championService.audit.Warn("No CDN versions found.")
-		return nil, errors.New("no CDN versions found")
-	}
-
-	latestVersion := versions[0]
-	_championService.audit.Info("Got latest version from ddragon - %s", latestVersion)
-
-	_championService.audit.Info("Requesting Champions from ddragon portal")
-	resp, err := http.Get("https://ddragon.leagueoflegends.com/cdn/" + latestVersion + "/data/en_US/champion.json")
+func (championService ChampionService) GetChampions() (*[]model.Champion, error) {
+	championService.audit.Info("Requesting Champions from ddragon portal")
+	resp, err := http.Get("https://ddragon.leagueoflegends.com/cdn/" + championService.version + "/data/en_US/champion.json")
 	if err != nil {
-		_championService.audit.Warn("Error fetching champion data - %v", err)
+		championService.audit.Warn("Error fetching champion data - %v", err)
 		return nil, err
 	}
 	defer resp.Body.Close()
 
 	var championData ChampionData
 	if err := json.NewDecoder(resp.Body).Decode(&championData); err != nil {
-		_championService.audit.Warn("Error deserializing champion data - %v", err)
+		championService.audit.Warn("Error deserializing champion data - %v", err)
 		return nil, err
 	}
 
@@ -65,38 +46,18 @@ func (_championService ChampionService) GetChampions() (*[]model.Champion, error
 	return &champions, nil
 }
 
-func (_championService ChampionService) GetChampionById(id string) (*model.Champion, error) {
-	version, err := http.Get("https://ddragon.leagueoflegends.com/api/versions.json")
-	if err != nil || version.StatusCode != http.StatusOK {
-		_championService.audit.Warn("Couldn't fetch latest version from ddragon - %v", err)
-		return nil, err
-	}
-	defer version.Body.Close()
-
-	var versions []string
-	if err := json.NewDecoder(version.Body).Decode(&versions); err != nil {
-		_championService.audit.Warn("Couldn't decode versions from ddragon - %v", err)
-		return nil, err
-	}
-
-	if len(versions) < 1 {
-		_championService.audit.Warn("No CDN versions found.")
-		return nil, errors.New("no CDN versions found")
-	}
-
-	latestVersion := versions[0]
-
-	_championService.audit.Info("Requesting Champions from ddragon portal")
-	resp, err := http.Get("https://ddragon.leagueoflegends.com/cdn/" + latestVersion + "/data/en_US/champion.json")
+func (championService ChampionService) GetChampionById(id string) (*model.Champion, error) {
+	championService.audit.Info("Requesting Champions from ddragon portal")
+	resp, err := http.Get("https://ddragon.leagueoflegends.com/cdn/" + championService.version + "/data/en_US/champion.json")
 	if err != nil {
-		_championService.audit.Warn("Error fetching champion data - %v", err)
+		championService.audit.Warn("Error fetching champion data - %v", err)
 		return nil, err
 	}
 	defer resp.Body.Close()
 
 	var championData ChampionData
 	if err := json.NewDecoder(resp.Body).Decode(&championData); err != nil {
-		_championService.audit.Warn("Error deserializing champion data - %v", err)
+		championService.audit.Warn("Error deserializing champion data - %v", err)
 		return nil, err
 	}
 
@@ -104,7 +65,7 @@ func (_championService ChampionService) GetChampionById(id string) (*model.Champ
 
 	champion, ok := championData.Data[id]
 	if !ok {
-		_championService.audit.Warn("No champion with id %s", id)
+		championService.audit.Warn("No champion with id %s", id)
 		return nil, errors.New("no champion with id " + id)
 	}
 
