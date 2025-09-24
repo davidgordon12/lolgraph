@@ -23,8 +23,9 @@ func main() {
 
 	championHandler := handler.NewChampionHandler(audit)
 	itemHandler := handler.NewItemHandler(audit)
+	imageHandler := handler.NewImageHandler(audit)
 
-	handler.RegisterRoutes(router, championHandler, itemHandler)
+	handler.RegisterRoutes(router, championHandler, itemHandler, imageHandler)
 
 	audit.Info("Starting server on port :8080")
 	router.Run(":8080")
