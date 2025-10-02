@@ -1,0 +1,9 @@
+<div class="p-6">
+    <ul class="list-disc list-inside space-y-2">
+        @for (item of items(); track item.id) {
+            <img [src]="'http://localhost:8080/images/' + resource() + '/' + item.id + '.png'" [alt]="item.name"/>
+        } @empty {
+            <li> Couldn't fetch item </li>
+        }
+    </ul>
+</div>

@@ -1,4 +1,5 @@
 import { Component, input, signal } from '@angular/core';
+import { Model } from '../../model/model';
 
 @Component({
   selector: 'app-toolbar',
@@ -7,10 +8,6 @@ import { Component, input, signal } from '@angular/core';
   styleUrl: './toolbar.css'
 })
 export class Toolbar {
-  title = input.required<string>();
-  items = signal([
-    {id: 1, name: 'Champions'},
-    {id: 2, name: 'Items'},
-    {id: 3, name: 'Runes'},
-  ]);
+  resource = input.required<string>()
+  items = input.required<Model[]>();
 }
