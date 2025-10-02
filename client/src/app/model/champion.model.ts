@@ -1,4 +1,6 @@
-export interface Champion {
+import { Model } from "./model";
+
+export interface Champion extends Model {
     id: string
     key: string
     name: string

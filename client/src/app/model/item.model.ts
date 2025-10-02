@@ -1,4 +1,6 @@
-export type Item = {
+import { Model } from "./model"
+
+export interface Item extends Model {
 	id:          string 
 	name:        string 
 	description: string  
