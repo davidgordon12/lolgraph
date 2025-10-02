@@ -1,2 +1,3 @@
 <p>graph works!</p>
-<app-toolbar title="toolbar"></app-toolbar>
+<div class="flex-row"><app-toolbar id="champion-toolbar" [resource]="'champion'" [items]="championList()"></app-toolbar></div>
+<div class="flex-row"><app-toolbar id="item-toolbar" [resource]="'item'" [items]="itemList()"></app-toolbar></div>

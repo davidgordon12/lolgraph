@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
-import { Toolbar } from './toolbar/toolbar';
+import { Component, input } from '@angular/core';
+import { Toolbar } from '../../shared/toolbar/toolbar';
+import { Champion } from '../../model/champion.model';
+import { Item } from '../../model/item.model';
 
 @Component({
   selector: 'app-graph',
@@ -9,5 +11,6 @@ import { Toolbar } from './toolbar/toolbar';
 })
 
 export class Graph {
-
+  championList = input.required<Champion[]>()
+  itemList = input.required<Item[]>()
 }

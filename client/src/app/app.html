@@ -1,5 +1,1 @@
-@for (champion of champions(); track champion.id) {
-    <li> {{ champion.name }} </li>
-} @empty {
-    <li> Couldn't fetch champions </li>
-}
+<app-graph [championList]="champions" [itemList]="items"></app-graph>
