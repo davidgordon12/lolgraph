@@ -77,8 +77,9 @@ func (itemService ItemService) GetItems() (*[]model.Item, error) {
 	var items []model.Item
 	for key, item := range itemData.Data {
 		item.ID = key
-		// TODO: Discard items that do not affect DPS
-		items = append(items, item)
+		if slices.Contains(item.Tags, "Damage") || slices.Contains(item.Tags, "SpellDamage") {
+			items = append(items, item)
+		}
 	}
 	return &items, nil
 }
