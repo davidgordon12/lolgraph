@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, Input, input } from '@angular/core';
 import { Toolbar } from '../../shared/toolbar/toolbar';
 import { Champion } from '../../model/champion.model';
 import { Item } from '../../model/item.model';
@@ -11,6 +11,10 @@ import { Item } from '../../model/item.model';
 })
 
 export class Graph {
-  championList = input.required<Champion[]>()
-  itemList = input.required<Item[]>()
+  @Input() championList!: Champion[]
+  @Input() itemList!: Item[]
+
+  ngOnInit() {
+    this.championList = []
+  }
 }
