@@ -1,11 +1,12 @@
-import { Component, Input, input } from '@angular/core';
+import { Component, Input} from '@angular/core';
 import { Toolbar } from '../../shared/toolbar/toolbar';
+import { Sidebar } from '../../shared/sidebar/sidebar';
 import { Champion } from '../../model/champion.model';
 import { Item } from '../../model/item.model';
 
 @Component({
   selector: 'app-graph',
-  imports: [Toolbar],
+  imports: [Toolbar, Sidebar],
   templateUrl: './graph.html',
   styleUrl: './graph.css'
 })
@@ -13,8 +14,4 @@ import { Item } from '../../model/item.model';
 export class Graph {
   @Input() championList!: Champion[]
   @Input() itemList!: Item[]
-
-  ngOnInit() {
-    this.championList = []
-  }
 }
