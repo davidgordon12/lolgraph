@@ -1,5 +1,11 @@
-<div class="flex">
-    <canvas id="graph" class="w-full bg-gray-900"></canvas>
-    <app-toolbar id="champion-toolbar" [resource]="'champion'" [items]="championList"></app-toolbar>
-    <app-toolbar id="item-toolbar" [resource]="'item'" [items]="itemList"></app-toolbar>
+<div class="h-screen max-h-screen flex flex-col flex-grow">
+    <div class="flex h-screen">
+        <app-toolbar id="champion-toolbar" [resource]="'champion'" [items]="championList"></app-toolbar>
+        <app-toolbar id="item-toolbar" [resource]="'item'" [items]="itemList"></app-toolbar>
+        <div class="flex flex-col w-full h-full">
+            <canvas id="graph" class="w-full h-full bg-gray-900"></canvas>
+            <div class="w-full h-48 bg-blue-800"></div>
+        </div>
+        <app-toolbar id="enemy-toolbar" [resource]="'champion'" [items]="championList"></app-toolbar>
+    </div>
 </div>

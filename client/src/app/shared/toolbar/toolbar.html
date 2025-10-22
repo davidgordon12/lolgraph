@@ -1,7 +1,7 @@
-<div class="w-min h-screen overflow-auto no-scrollbar border-1">
-    <label for="toolbar-search" class="px-1">Search: </label>
+<div class="sm:w-64 w-24 border-1 h-screen overflow-y-scroll overflow-x-hidden bg-gray-800">
+    <label for="toolbar-search" class="px-1 text-blue-300">Search: </label>
     <input class="text p-1 w-48 decoration-0" id="toolbar-search" type="text" [placeholder]="resource() + ' name'"/>
-    <div class="decoration-0 bg-gray-700 grid grid-cols-3 gap-2 w-64 overflow-y-scroll no-scrollbar p-4 border border-gray-400">
+    <div class="w-max bg-gray-600 grid sm:grid-cols-3 grid-cols-1 gap-2 p-4 border border-gray-400 overflow-y-scroll no-scrollbar">
         @for (item of items(); track item.id) {
         <img class="w-16 grid-item" [src]="'http://localhost:8080/images/' + resource() + '/' + item.id + '.png'" [alt]="item.name" />
         } @empty {
