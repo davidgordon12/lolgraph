@@ -10,4 +10,8 @@ import { Model } from '../../model/model';
 export class Toolbar {
   resource = input.required<string>()
   items = input.required<Model[]>();
+
+  toolbarItemClicked(item: Model): void {
+    console.log("Clicked on " + item.name)
+  }
 }
