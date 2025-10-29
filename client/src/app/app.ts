@@ -1,9 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, Input, signal } from '@angular/core';
 import { Graph } from './features/graph/graph';
-import { fetchChampions } from './core/champion.service';
 import { Champion } from './model/champion.model';
 import { Item } from './model/item.model';
-import { fetchItems } from './core/item.service';
+import { ChampionService, ItemService } from './core';
 
 @Component({
   selector: 'app-root',
@@ -12,15 +11,18 @@ import { fetchItems } from './core/item.service';
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('lolgraph');
+  private championService = inject(ChampionService)
+  private itemService = inject(ItemService)
+
   champions: Champion[] = []
   items: Item[] = []
 
   async ngOnInit(): Promise<void> {
     const [champs, items] = await Promise.all([
-      fetchChampions(),
-      fetchItems(),
+      this.championService.fetchChampions(),
+      this.itemService.fetchItems(),
     ])
+
     this.champions = champs
     this.items = items
   }
