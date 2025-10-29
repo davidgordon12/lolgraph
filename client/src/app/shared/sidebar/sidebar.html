@@ -3,7 +3,10 @@
     <p> "Items" </p>
     <div>
         <h5>"Selected"</h5>
-        @for(entry of selected; track entry[0]) {
+        @if(selectedChampion) {
+            <app-item [item]="selectedChampion!" />
+        }
+        @for(entry of selectedItems; track entry[0]) {
             <app-item [item]="entry[1]" (click)="removeSelectedItem(entry[0])"/>
         }
     </div>

@@ -4,6 +4,8 @@ import { CommunicationService } from '../../core';
 import { Model } from '../../model/model';
 import { ItemViewmodel } from '../item/item';
 import { filter } from 'rxjs';
+import { Item } from '../../model/item.model';
+import { Champion } from '../../model/champion.model';
 
 @Component({
   selector: 'app-sidebar',
@@ -14,11 +16,8 @@ import { filter } from 'rxjs';
 export class Sidebar {
   private communicationService = inject(CommunicationService);
 
-  /*
   selectedChampion?: Champion
-  selectedItems?: Map<string, Item>
-  */
-  selected: Map<string, Model> = new Map()
+  selectedItems: Map<string, Item> = new Map()
   @Input() source!: string
 
   ngOnInit(): void {
@@ -26,11 +25,20 @@ export class Sidebar {
       .pipe(filter(data => data.source == this.source))
       .subscribe((data) => {
         // TODO: Only allow one champion to be selected at a time
-        this.selected.set(data.item.id, data.item)
+        let item: Model = data.item
+        if(item.resource == "champion") {
+          this.selectedChampion = item as Champion
+        } else {
+          if(this.selectedItems.size >= 6) {
+            alert('Max 6 items.')
+            return
+          }
+          this.selectedItems.set(item.id, item as Item)
+        }
       })
   }
 
   removeSelectedItem(id: string): void {
-    this.selected.delete(id)
+    this.selectedItems.delete(id)
   }
 }
