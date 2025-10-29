@@ -1,13 +1,13 @@
 <div class="h-screen max-h-screen flex flex-col flex-grow">
     <div class="flex h-screen">
-        <app-sidebar />
-        <app-toolbar id="ally-champion-toolbar" [resource]="'champion'" [items]="championList" />
-        <app-toolbar id="ally-item-toolbar" [resource]="'item'" [items]="itemList" />
+        <app-sidebar [source]="'AllyToolbar'" />
+        <app-toolbar id="ally-champion-toolbar" [items]="championList" [source]="'AllyToolbar'"/>
+        <app-toolbar id="ally-item-toolbar" [items]="itemList" [source]="'AllyToolbar'"/>
         <div class=" flex-col w-full h-full">
             <canvas id="graph" class="w-full h-full bg-gray-900"></canvas>
         </div>
-        <app-toolbar id="enemy-champion-toolbar" [resource]="'champion'" [items]="championList"></app-toolbar>
-        <app-toolbar id="enemy-item-toolbar" [resource]="'item'" [items]="itemList" />
-        <app-sidebar />
+        <app-toolbar id="enemy-champion-toolbar" [items]="championList" [source]="'EnemyToolbar'"></app-toolbar>
+        <app-toolbar id="enemy-item-toolbar" [items]="itemList" [source]="'EnemyToolbar'"/>
+        <app-sidebar [source]="'EnemyToolbar'" />
     </div>
 </div>
