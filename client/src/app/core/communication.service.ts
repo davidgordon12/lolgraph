@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Subject, Observable } from "rxjs";
-import { Model } from "../model/model";
-import { ToolbarEvent } from "../shared/types";
+import { SidebarEvent, ToolbarEvent } from "../shared/types";
 
 @Injectable({
     providedIn: "root"
@@ -9,10 +8,16 @@ import { ToolbarEvent } from "../shared/types";
 
 export class CommunicationService {
     private toolbarClickSource = new Subject<ToolbarEvent>()
+    private sidebarClickSource = new Subject<SidebarEvent>()
 
     toolbarClicked$: Observable<ToolbarEvent> = this.toolbarClickSource.asObservable()
+    sidebarClicked$: Observable<SidebarEvent> = this.sidebarClickSource.asObservable()
 
     notifyToolbarClick(data: ToolbarEvent): void {
         this.toolbarClickSource.next(data)
+    }
+
+    notifySidebarClick(data: SidebarEvent): void {
+        this.sidebarClickSource.next(data)
     }
 }

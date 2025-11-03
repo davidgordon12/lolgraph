@@ -1,8 +1,8 @@
 <div class="flex flex-col">
-    <p> "Champions" </p>
-    <p> "Items" </p>
+    <p (click)="onItemClicked('Champions')"> "Champions" </p>
+    <p (click)="onItemClicked('Items')"> "Items" </p>
     <div>
-        <h5>"Selected"</h5>
+        <p (click)="onItemClicked('Selected')" >"Selected"</p>
         @if(selectedChampion) {
             <app-item [item]="selectedChampion!" />
         }
