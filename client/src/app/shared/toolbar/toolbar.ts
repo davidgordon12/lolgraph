@@ -63,4 +63,8 @@ export class Toolbar {
         }
         this.communicationService.notifyToolbarClick(data);
     }
+
+    closeToolbar(): void {
+        // TODO: Get the caller (DOM element) and hide it
+    }
 }

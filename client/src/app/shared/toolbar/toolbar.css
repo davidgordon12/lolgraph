@@ -1,3 +1,19 @@
 #toolbar-search::placeholder {
     color: gray
 }
+
+
+
+.half-moon-left {
+    display: inline-block;
+    border-radius: 1em 0 0 1em;
+    height: 5rem;
+    width: 2rem;
+}
+
+.half-moon-right {
+    display: inline-block;
+    border-radius: 0 1em 1em 0;
+    height: 5rem;
+    width: 2rem;
+}
