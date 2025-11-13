@@ -17,11 +17,17 @@ export class Toolbar {
     @Input() sidebarSource!: SidebarSource
     private communicationService = inject(CommunicationService)
 
-    allyChampionToolbar: HTMLElement = document.getElementById('ally-champion-toolbar')!
-    enemyChampionToolbar: HTMLElement = document.getElementById('enemy-champion-toolbar')!
+    allyChampionToolbar: HTMLElement | null = null;
+    enemyChampionToolbar: HTMLElement | null = null;
+    allyItemToolbar: HTMLElement | null = null;
+    enemyItemToolbar: HTMLElement | null = null;
 
-    allyItemToolbar: HTMLElement = document.getElementById('ally-item-toolbar')!
-    enemyItemToolbar: HTMLElement = document.getElementById('enemy-item-toolbar')!
+    ngAfterViewInit(): void {
+        this.allyChampionToolbar = document.getElementById('ally-champion-toolbar');
+        this.enemyChampionToolbar = document.getElementById('enemy-champion-toolbar');
+        this.allyItemToolbar = document.getElementById('ally-item-toolbar');
+        this.enemyItemToolbar = document.getElementById('enemy-item-toolbar');
+    }
 
     ngOnInit(): void {
 
@@ -31,27 +37,27 @@ export class Toolbar {
                 switch (data.element) {
                     case 'Champions':
                         if (this.sidebarSource == 'AllySidebar') {
-                            this.allyItemToolbar.style.display = 'none'
-                            this.allyChampionToolbar.style.display = 'block'
+                            this.allyItemToolbar!.style.display = 'none'
+                            this.allyChampionToolbar!.style.display = 'block'
                         }
-                        if(this.sidebarSource == 'EnemySidebar') {
-                            this.enemyItemToolbar.style.display = 'none'
-                            this.enemyChampionToolbar.style.display = 'block'
+                        if (this.sidebarSource == 'EnemySidebar') {
+                            this.enemyItemToolbar!.style.display = 'none'
+                            this.enemyChampionToolbar!.style.display = 'block'
                         }
                         break
                     case 'Items':
                         if (this.sidebarSource == 'AllySidebar') {
-                            this.allyItemToolbar.style.display = 'block'
-                            this.allyChampionToolbar.style.display = 'none'
+                            this.allyItemToolbar!.style.display = 'block'
+                            this.allyChampionToolbar!.style.display = 'none'
                         }
-                        if(this.sidebarSource == 'EnemySidebar') {
-                            this.enemyItemToolbar.style.display = 'block'
-                            this.enemyChampionToolbar.style.display = 'none'
+                        if (this.sidebarSource == 'EnemySidebar') {
+                            this.enemyItemToolbar!.style.display = 'block'
+                            this.enemyChampionToolbar!.style.display = 'none'
                         }
                         break
                     case 'Selected':
                         break
-                    
+
                 }
             })
     }
@@ -64,7 +70,16 @@ export class Toolbar {
         this.communicationService.notifyToolbarClick(data);
     }
 
-    closeToolbar(): void {
-        // TODO: Get the caller (DOM element) and hide it
+    closeToolbar(event: any): void {
+        switch (event.target.getAttribute("id")) {
+            case "ally-closeToolbar":
+                this.allyItemToolbar!.style.display = 'none'
+                this.allyChampionToolbar!.style.display = 'none'
+                break
+            case "enemy-closeToolbar":
+                this.enemyItemToolbar!.style.display = 'none'
+                this.enemyChampionToolbar!.style.display = 'none'
+                break
+        }
     }
 }
