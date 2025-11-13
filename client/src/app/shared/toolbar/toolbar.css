@@ -2,7 +2,14 @@
     color: gray
 }
 
+.no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
 
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
 
 .half-moon-left {
     display: inline-block;
