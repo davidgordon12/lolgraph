@@ -30,7 +30,6 @@ export class Toolbar {
     }
 
     ngOnInit(): void {
-
         this.communicationService.sidebarClicked$
             .pipe(filter(data => data.source == this.sidebarSource))
             .subscribe((data) => {

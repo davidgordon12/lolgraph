@@ -1,6 +1,6 @@
 <div class="h-screen max-h-screen flex flex-col flex-grow">
    <div class="flex h-screen">
-        <app-sidebar [toolbarSource]="'AllyToolbar'" [sidebarSource]="'AllySidebar'" />
+        <app-sidebar [(selectedChampion)]="allyChampion" [(selectedItems)]="allyItems" [toolbarSource]="'AllyToolbar'" [sidebarSource]="'AllySidebar'" />
         <app-toolbar style="display: none;" id="ally-champion-toolbar" [items]="championList" [toolbarSource]="'AllyToolbar'" [sidebarSource]="'AllySidebar'" />
         <app-toolbar style="display: none;" id="ally-item-toolbar" [items]="itemList" [toolbarSource]="'AllyToolbar'" [sidebarSource]="'AllySidebar'"/>
         <div class=" flex-col w-full h-full" (click)="focusGraph()">
@@ -8,6 +8,6 @@
         </div>
         <app-toolbar style="display: none;" id="enemy-champion-toolbar" [items]="championList" [toolbarSource]="'EnemyToolbar'" [sidebarSource]="'EnemySidebar'"></app-toolbar>
         <app-toolbar style="display: none;" id="enemy-item-toolbar" [items]="itemList" [toolbarSource]="'EnemyToolbar'" [sidebarSource]="'EnemySidebar'"/>
-        <app-sidebar [toolbarSource]="'EnemyToolbar'" [sidebarSource]="'EnemySidebar'" />
+        <app-sidebar [(selectedChampion)]="enemyChampion" [(selectedItems)]="enemyItems" [toolbarSource]="'EnemyToolbar'" [sidebarSource]="'EnemySidebar'" />
     </div>
 </div>

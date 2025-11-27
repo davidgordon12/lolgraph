@@ -3,10 +3,10 @@
     <p (click)="onItemClicked('Items')"> "Items" </p>
     <div>
         <p (click)="onItemClicked('Selected')" >"Selected"</p>
-        @if(selectedChampion) {
-            <app-item [item]="selectedChampion!" />
+        @if(selectedChampion()) {
+            <app-item [item]="selectedChampion()" />
         }
-        @for(entry of selectedItems; track entry[0]) {
+        @for(entry of selectedItems(); track entry[0]) {
             <app-item [item]="entry[1]" (click)="removeSelectedItem(entry[0])"/>
         }
     </div>

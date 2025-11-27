@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, WritableSignal, signal } from '@angular/core';
 import { Toolbar } from '../../shared/toolbar/toolbar';
 import { Sidebar } from '../../shared/sidebar/sidebar';
 import { Champion } from '../../model/champion.model';
@@ -14,6 +14,12 @@ import { Item } from '../../model/item.model';
 export class Graph {
     @Input() championList!: Champion[]
     @Input() itemList!: Item[]
+
+    allyChampion: WritableSignal<Champion> = signal(undefined as any)
+    allyItems: WritableSignal<Map<string, Item>> = signal(new Map())
+
+    enemyChampion: WritableSignal<Champion> = signal(undefined as any)
+    enemyItems: WritableSignal<Map<string, Item>> = signal(new Map())
 
     focusGraph(): void {
         document.getElementById('ally-champion-toolbar')!.style.display = 'none'

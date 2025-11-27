@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, model, WritableSignal } from '@angular/core';
 import { Toolbar } from '../toolbar/toolbar';
 import { CommunicationService } from '../../core';
 import { Model } from '../../model/model';
@@ -17,8 +17,9 @@ import { ElementSource, SidebarEvent, SidebarSource, ToolbarSource } from '../ty
 export class Sidebar {
     private communicationService = inject(CommunicationService);
 
-    selectedChampion?: Champion
-    selectedItems: Map<string, Item> = new Map()
+    selectedChampion = model<Champion>({} as Champion)
+    selectedItems = model<Map<string, Item>>(new Map())
+    
     @Input() toolbarSource!: ToolbarSource
     @Input() sidebarSource!: SidebarSource
 
@@ -28,18 +29,26 @@ export class Sidebar {
             .subscribe((data) => {
                 let item: Model = data.item
                 if (item.resource == "champion") {
-                    this.selectedChampion = item as Champion
+                    this.selectedChampion?.set(item as Champion)
                 } else {
-                    if (this.selectedItems.size >= 6) {
+                    if (this.selectedItems!().size >= 6) {
                         return
                     }
-                    this.selectedItems.set(item.id, item as Item)
+                    this.selectedItems?.update(x => {
+                        const map = new Map(x)
+                        map.set(item.id, item as Item)
+                        return map
+                    })
                 }
             })
     }
 
     removeSelectedItem(id: string): void {
-        this.selectedItems.delete(id)
+        this.selectedItems?.update(x => {
+            const map = new Map(x)
+            map.delete(id)
+            return map
+        })
     }
 
     onItemClicked(e: ElementSource) {
