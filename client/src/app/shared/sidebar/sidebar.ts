@@ -7,10 +7,11 @@ import { filter } from 'rxjs';
 import { Item } from '../../model/item.model';
 import { Champion } from '../../model/champion.model';
 import { ElementSource, SidebarEvent, SidebarSource, ToolbarSource } from '../types';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-sidebar',
-    imports: [ItemViewmodel],
+    imports: [ItemViewmodel, FormsModule],
     templateUrl: './sidebar.html',
     styleUrl: './sidebar.css'
 })
@@ -22,6 +23,8 @@ export class Sidebar {
     
     @Input() toolbarSource!: ToolbarSource
     @Input() sidebarSource!: SidebarSource
+
+    championLevel: number = 1;
 
     ngOnInit(): void {
         this.communicationService.toolbarClicked$
