@@ -78,6 +78,7 @@ func (itemService ItemService) GetItems() (*[]model.Item, error) {
 	for key, item := range itemData.Data {
 		item.ID = key
 		if slices.Contains(item.Tags, "Damage") || slices.Contains(item.Tags, "SpellDamage") {
+			itemService.parseItemDescription(&item)
 			items = append(items, item)
 		}
 	}

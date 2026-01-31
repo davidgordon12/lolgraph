@@ -3,6 +3,7 @@ import { Graph } from './features/graph/graph';
 import { Champion } from './model/champion.model';
 import { Item } from './model/item.model';
 import { ChampionService, ItemService } from './core';
+import axios from 'axios';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,7 @@ export class App {
   champions: Champion[] = []
   items: Item[] = []
 
-  async ngOnInit(): Promise<void> {
+  async ngAfterViewInit(): Promise<void> {
     const [champs, items] = await Promise.all([
       this.championService.fetchChampions(),
       this.itemService.fetchItems(),
