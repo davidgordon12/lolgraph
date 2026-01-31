@@ -14,6 +14,8 @@ export interface Item extends Model {
 		percentattackspeedmod: number
 
 		// These stats are not directly populated from the API call
+		flatarmorpenetration:     number // Lethality
+	    flatmagicpenetration:     number // Magic Pen
 		percentcritdamage:       number
 		percentarmorpenetration: number
 		percentmagicpenetration: number

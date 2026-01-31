@@ -18,6 +18,8 @@ type ItemStats struct {
 	PercentAttackSpeedMod float32
 
 	// These stats are not directly populated from the API call
+	FlatArmorPenetration    int // Lethality
+	FlatMagicPenetration    int // Magic Pen
 	PercentCritDamage       float64
 	PercentArmorPenetration float64
 	PercentMagicPenetration float64

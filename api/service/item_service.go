@@ -48,6 +48,13 @@ func (itemService ItemService) parseItemDescription(item *model.Item) {
 
 		res, _ := strconv.ParseFloat(armorPenetration, 64)
 		item.Stats.PercentArmorPenetration = res
+
+		lethalityRegex := regexp.MustCompile(`<attention>(\d+)<\/attention>\sLethality`)
+		lethalityString := lethalityRegex.FindString(item.Description)
+		lethality := percentRegex.FindString(lethalityString)
+
+		res2, _ := strconv.ParseInt(lethality, 10, 32)
+		item.Stats.FlatArmorPenetration = int(res2)
 	}
 	if slices.Contains(item.Tags, "MagicPenetration") {
 		magicPenetrationRegex := regexp.MustCompile(`<attention>(\d+)%<\/attention>\sMagic\sPenetration`)
