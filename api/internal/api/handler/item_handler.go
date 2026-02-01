@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	a "github.com/davidgordon12/audit"
-	"github.com/davidgordon12/lolgraph/service"
+	"github.com/davidgordon12/lolgraph/internal/service"
 	"github.com/gin-gonic/gin"
 )
 

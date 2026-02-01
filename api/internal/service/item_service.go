@@ -9,11 +9,12 @@ import (
 	"strconv"
 
 	a "github.com/davidgordon12/audit"
-	"github.com/davidgordon12/lolgraph/model"
+	"github.com/davidgordon12/lolgraph/internal/model"
 )
 
 type ItemService struct {
-	audit *a.Audit
+	version string
+	audit   *a.Audit
 }
 
 type ItemData struct {
@@ -21,33 +22,8 @@ type ItemData struct {
 }
 
 func NewItemService(a *a.Audit) *ItemService {
-	return &ItemService{audit: a}
-}
-
-func (itemService ItemService) getVersion() string {
-	fallbackVersion := "15.18.1"
-	version, err := http.Get("https://ddragon.leagueoflegends.com/api/versions.json")
-	if err != nil || version.StatusCode != http.StatusOK {
-		itemService.audit.Warn("Couldn't fetch latest version from ddragon - %v", err)
-		return fallbackVersion
-	}
-	defer version.Body.Close()
-
-	var versions []string
-	if err := json.NewDecoder(version.Body).Decode(&versions); err != nil {
-		itemService.audit.Warn("Couldn't decode versions from ddragon - %v", err)
-		return fallbackVersion
-	}
-
-	if len(versions) < 1 {
-		itemService.audit.Warn("No CDN versions found.")
-		return fallbackVersion
-	}
-
-	latestVersion := versions[0]
-	itemService.audit.Info("Got latest version from ddragon - %s", latestVersion)
-
-	return latestVersion
+	version := GetAPIVersion()
+	return &ItemService{version: version, audit: a}
 }
 
 func (itemService ItemService) parseItemDescription(item *model.Item) {
@@ -72,6 +48,13 @@ func (itemService ItemService) parseItemDescription(item *model.Item) {
 
 		res, _ := strconv.ParseFloat(armorPenetration, 64)
 		item.Stats.PercentArmorPenetration = res
+
+		lethalityRegex := regexp.MustCompile(`<attention>(\d+)<\/attention>\sLethality`)
+		lethalityString := lethalityRegex.FindString(item.Description)
+		lethality := percentRegex.FindString(lethalityString)
+
+		res2, _ := strconv.ParseInt(lethality, 10, 32)
+		item.Stats.FlatArmorPenetration = int(res2)
 	}
 	if slices.Contains(item.Tags, "MagicPenetration") {
 		magicPenetrationRegex := regexp.MustCompile(`<attention>(\d+)%<\/attention>\sMagic\sPenetration`)
@@ -84,10 +67,8 @@ func (itemService ItemService) parseItemDescription(item *model.Item) {
 }
 
 func (itemService ItemService) GetItems() (*[]model.Item, error) {
-	latestVersion := itemService.getVersion()
-
 	itemService.audit.Info("Requesting Items from ddragon portal")
-	resp, err := http.Get("https://ddragon.leagueoflegends.com/cdn/" + latestVersion + "/data/en_US/item.json")
+	resp, err := http.Get("https://ddragon.leagueoflegends.com/cdn/" + itemService.version + "/data/en_US/item.json")
 	if err != nil {
 		itemService.audit.Warn("Error fetching item data - %v", err)
 		return nil, err
@@ -103,17 +84,17 @@ func (itemService ItemService) GetItems() (*[]model.Item, error) {
 	var items []model.Item
 	for key, item := range itemData.Data {
 		item.ID = key
-		// TODO: Discard items that do not affect DPS
-		items = append(items, item)
+		if slices.Contains(item.Tags, "Damage") || slices.Contains(item.Tags, "SpellDamage") {
+			itemService.parseItemDescription(&item)
+			items = append(items, item)
+		}
 	}
 	return &items, nil
 }
 
 func (itemService ItemService) GetItemById(id string) (*model.Item, error) {
-	latestVersion := itemService.getVersion()
-
 	itemService.audit.Info("Requesting Items from ddragon portal")
-	resp, err := http.Get("https://ddragon.leagueoflegends.com/cdn/" + latestVersion + "/data/en_US/item.json")
+	resp, err := http.Get("https://ddragon.leagueoflegends.com/cdn/" + itemService.version + "/data/en_US/item.json")
 	if err != nil {
 		itemService.audit.Warn("Error fetching item data - %v", err)
 		return nil, err
@@ -133,7 +114,7 @@ func (itemService ItemService) GetItemById(id string) (*model.Item, error) {
 		itemService.audit.Warn("No item with id %s", id)
 		return nil, errors.New("no item with id " + id)
 	}
-
+	item.ID = id
 	itemService.parseItemDescription(&item)
 	return &item, nil
 }

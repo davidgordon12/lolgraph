@@ -1,0 +1,19 @@
+<div class="relative no-scollbar">
+
+<div style="scrollbar-width: none;" class="sm:w-64 w-24 border-1 h-screen overflow-y-visible overflow-x-hidden bg-gray-800">
+    <label for="toolbar-search" class="px-1 text-blue-300">Search: </label>
+    <input class="text-white p-1 w-48 decoration-0" id="toolbar-search" type="text" [placeholder]="'...'"/>
+    <div class="w-max bg-gray-600 grid sm:grid-cols-3 grid-cols-1 gap-2 p-4 border border-gray-400 overflow-y-scroll no-scrollbar">
+        @for (item of items; track item.id) {
+            <app-item [item]="item" (click)="toolbarItemClicked(item)" />
+        } @empty {
+        <p> Couldn't fetch item </p>
+        }
+    </div>
+    @if(toolbarSource === 'AllyToolbar') {
+        <button id="ally-closeToolbar" (click)="closeToolbar($event)" class="border-blue-200 border-2 hover:cursor-grab half-moon-left absolute right-0 top-1/2 w-12 text-2xl font-bold bg-gray-900 h-12 text-white">X</button>
+    } @else {
+        <button id="enemy-closeToolbar" (click)="closeToolbar($event)" class="border-blue-200 border-2 hover:cursor-grab half-moon-right absolute left-0 top-1/2 w-12 text-2xl font-bold bg-gray-900 h-12 text-white">X</button>
+    }
+</div>
+</div>

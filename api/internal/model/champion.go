@@ -8,11 +8,6 @@ type Champion struct {
 	Stats ChampionStats `json:"stats"`
 }
 
-type Image struct {
-	Full   string `json:"full"`
-	Sprite string `json:"sprite"`
-}
-
 type ChampionStats struct {
 	HP                   float64 `json:"hp"`
 	HPPerLevel           float64 `json:"hpperlevel"`
