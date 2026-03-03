@@ -9,12 +9,13 @@ import (
 	a "github.com/davidgordon12/audit"
 	"github.com/davidgordon12/lolgraph/internal/api"
 	"github.com/davidgordon12/lolgraph/internal/api/handler"
+	"github.com/davidgordon12/lolgraph/internal/middleware"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	audit, err := a.NewAudit(a.AuditConfig{Level: a.DEBUG, FilePath: "logs/log.txt"})
+	audit, err := a.NewAudit(a.AuditConfig{Level: a.INFO, FilePath: "logs/log.txt"})
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Couldn't initialize logging. Exiting - %v\n", err)
 		os.Exit(1)
@@ -22,7 +23,11 @@ func main() {
 	defer audit.Close()
 
 	router := gin.New()
+
+	router.GET("/metrics", middleware.PrometheusHandler())
+
 	router.Use(gin.Recovery())
+	router.Use(middleware.RequestMetricsMiddleware())
 
 	// Configure CORS middleware
 	config := cors.DefaultConfig()

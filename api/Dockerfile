@@ -11,7 +11,7 @@ COPY . .
 RUN go mod download
 
 # Builds the app
-RUN go build -o lolgraph
+RUN go build -o lolgraph cmd/server/main.go 
 
 # Runs the executable
 CMD [ "./lolgraph" ]
