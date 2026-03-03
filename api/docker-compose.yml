@@ -28,6 +28,35 @@ services:
       - monitoring-network
     restart: unless-stopped
 
+  loki:
+    user: root
+    image: grafana/loki:latest
+    container_name: loki
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./loki.yml:/etc/loki/local-config.yaml
+      - loki_data:/loki
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - monitoring-network
+    restart: unless-stopped
+
+  promtail:
+    image: grafana/promtail:latest
+    container_name: promtail
+    ports:
+      - "9080:9080"
+    volumes:
+      - ./promtail.yml:/etc/promtail/config.yaml
+      - ./logs:/var/lib/lolgraph/logs
+    command: -config.file=/etc/promtail/config.yaml
+    depends_on:
+      - loki
+    networks:
+      - monitoring-network
+    restart: unless-stopped
+
   lolgraph:
     container_name: lolgraph
     build: 
@@ -54,6 +83,7 @@ services:
 volumes:
   prom_data:
   grafana_data:
+  loki_data:
   lolgraph_data:
 
 networks:
