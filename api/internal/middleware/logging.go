@@ -24,8 +24,7 @@ func LoggingMiddleware(audit *a.Audit) gin.HandlerFunc {
 
 		// Log in a format suitable for parsing by Promtail
 		logEntry := fmt.Sprintf(
-			"ts=%s level=%s traceId=%s method=%s path=%s status=%d duration_ms=%d client_ip=%s response_size=%d",
-			startTime,
+			"level=%s traceId=%s method=%s path=%s status=%d duration_ms=%d client_ip=%s response_size=%d",
 			"INFO",
 			uuid.New(),
 			method,
