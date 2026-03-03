@@ -22,6 +22,7 @@ services:
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=password # Change this to a secure password in production
     volumes:
+      - ./grafana.yml:/etc/grafana/grafana.yml
       - grafana_data:/var/lib/grafana
     networks:
       - monitoring-network
