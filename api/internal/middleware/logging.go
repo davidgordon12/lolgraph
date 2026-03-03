@@ -9,9 +9,7 @@ import (
 	"github.com/google/uuid"
 )
 
-// LokiMiddleware logs HTTP request/response data through the audit logger
-// in a format suitable for Loki
-func LokiMiddleware(audit *a.Audit) gin.HandlerFunc {
+func LoggingMiddleware(audit *a.Audit) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		startTime := time.Now()
 		path := c.Request.URL.Path
@@ -26,7 +24,7 @@ func LokiMiddleware(audit *a.Audit) gin.HandlerFunc {
 
 		// Log in a format suitable for parsing by Promtail
 		logEntry := fmt.Sprintf(
-			"ts=%s level=%s requestId=%s method=%s path=%s status=%d duration_ms=%d client_ip=%s response_size=%d",
+			"ts=%s level=%s traceId=%s method=%s path=%s status=%d duration_ms=%d client_ip=%s response_size=%d",
 			startTime,
 			"INFO",
 			uuid.New(),

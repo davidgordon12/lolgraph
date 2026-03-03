@@ -29,7 +29,7 @@ func main() {
 
 	router.Use(gin.Recovery())
 	router.Use(middleware.RequestMetricsMiddleware())
-	router.Use(middleware.LokiMiddleware(audit))
+	router.Use(middleware.LoggingMiddleware(audit))
 
 	// Configure CORS middleware
 	config := cors.DefaultConfig()

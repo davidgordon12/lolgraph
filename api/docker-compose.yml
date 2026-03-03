@@ -49,7 +49,7 @@ services:
       - "9080:9080"
     volumes:
       - ./promtail.yml:/etc/promtail/config.yaml
-      - ./logs:/var/lib/lolgraph/logs
+      - lolgraph_data:/app/logs
     command: -config.file=/etc/promtail/config.yaml
     depends_on:
       - loki
@@ -67,6 +67,7 @@ services:
       - "8080:8080"
     volumes:
       - .:/var/lib/lolgraph
+      - lolgraph_data:/app/logs
     networks:
       - monitoring-network
     healthcheck:

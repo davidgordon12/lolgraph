@@ -16,4 +16,4 @@ scrape_configs:
         labels:
           job: lolgraph-api
           service: api
-          __path__: /var/lib/lolgraph/logs/log.txt
+          __path__: /app/logs/*.txt
