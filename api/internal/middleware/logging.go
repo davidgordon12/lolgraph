@@ -35,6 +35,6 @@ func LoggingMiddleware(audit *a.Audit) gin.HandlerFunc {
 			responseSize,
 		)
 
-		audit.Info("%s", logEntry)
+		audit.Log(logEntry)
 	}
 }
