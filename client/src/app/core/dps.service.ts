@@ -1,4 +1,4 @@
-import { Item } from "../model/item.model";
+import { Item, mapItem } from "../model/item.model";
 import { Champion } from "../model/champion.model";
 import { Injectable } from "@angular/core";
 
@@ -12,8 +12,8 @@ export class DPSService {
         let enemyStats = enemyChampion.stats
 
         // Gather user's attack stats
-        allyStats.attackdamage += (allyStats.attackdamageperlevel * allyLevel)
-        allyStats.attackspeed += (allyStats.attackspeedperlevel * allyLevel)
+        allyStats.attackdamage += (allyStats.attackdamageperlevel * (allyLevel - 1))
+        allyStats.attackspeed += (allyStats.attackspeedperlevel * (allyLevel - 1))
 
         // Will be multiplied against enemy armor as a percentage to apply armor pen, 
         // 1 is a sensible default in the case we do not have any armor penetration items.
@@ -23,25 +23,28 @@ export class DPSService {
         let critDamage: number = 175
         let infinityEdge: boolean = false
 
-        for(let item of allyItems) {
-            allyStats.attackdamage += item.stats.flatphysicaldamagemod
-            allyStats.attackspeed += (allyStats.attackspeed * item.stats.percentattackspeedmod)
+        for (let item of allyItems) {
+            item = mapItem(item)
+            allyStats.attackdamage += item.stats.flatphysicaldamagemod ?? 0
+            console.log(item.stats.flatphysicaldamagemod)
+            allyStats.attackspeed += (allyStats.attackspeed * (item.stats.percentattackspeedmod ?? 0))
             flatArmorPenetration += item.stats.flatarmorpenetration
             critChance += item.stats.flatcritchancemod
             if (item.name == "Infinity Edge") {
                 critDamage = 215
             }
             if (item.stats.percentarmorpenetration != 0) {
-                percentArmorPenetration = item.stats.percentarmorpenetration / 100       
+                percentArmorPenetration = item.stats.percentarmorpenetration / 100
             }
+            console.log(allyStats.attackdamage)
+            console.log(allyStats.attackspeed)
         }
 
         // Gather enemy targets defense stats
         enemyStats.armor += (enemyStats.armorperlevel * enemyLevel)
 
         for(let item of enemyItems) {
-            let enemyItemStats = item.stats
-            enemyStats.armor += enemyItemStats.flatarmormod
+            enemyStats.armor += item.stats.flatarmormod
         }
 
         // Apply final modifiers

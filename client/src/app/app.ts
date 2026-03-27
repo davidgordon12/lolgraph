@@ -3,7 +3,6 @@ import { Graph } from './features/graph/graph';
 import { Champion } from './model/champion.model';
 import { Item } from './model/item.model';
 import { ChampionService, ItemService } from './core';
-import axios from 'axios';
 
 @Component({
   selector: 'app-root',

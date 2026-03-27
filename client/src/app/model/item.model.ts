@@ -22,3 +22,25 @@ export interface Item extends Model {
 	}
 	tags:        string[]
 }
+
+export const mapItem = (apiItem: any): Item => ({
+    id:          apiItem.id,
+    resource:    "item",
+    name:        apiItem.name,
+    description: apiItem.description,
+    image:       apiItem.image,
+    tags:        apiItem.tags,
+    stats: {
+        flatarmormod:            apiItem.stats.FlatArmorMod             ?? 0,
+        flatspellblockmod:       apiItem.stats.FlatSpellBlockMod        ?? 0,
+        flatmagicdamagemod:      apiItem.stats.FlatMagicDamageMod       ?? 0,
+        flatphysicaldamagemod:   apiItem.stats.FlatPhysicalDamageMod    ?? 0,
+        flatcritchancemod:       apiItem.stats.FlatCritChanceMod        ?? 0,
+        percentattackspeedmod:   apiItem.stats.PercentAttackSpeedMod    ?? 0,
+        flatarmorpenetration:    apiItem.stats.FlatArmorPenetration     ?? 0,
+        flatmagicpenetration:    apiItem.stats.FlatMagicPenetration     ?? 0,
+        percentcritdamage:       apiItem.stats.PercentCritDamageMod     ?? 0,
+        percentarmorpenetration: apiItem.stats.PercentArmorPenetration  ?? 0,
+        percentmagicpenetration: apiItem.stats.PercentMagicPenetration  ?? 0,
+    }
+})
