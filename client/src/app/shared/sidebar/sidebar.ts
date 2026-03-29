@@ -1,4 +1,4 @@
-import { Component, inject, Input, model, WritableSignal } from '@angular/core';
+import { Component, EventEmitter, inject, Input, model, Output, WritableSignal } from '@angular/core';
 import { Toolbar } from '../toolbar/toolbar';
 import { CommunicationService } from '../../core';
 import { Model } from '../../model/model';
@@ -24,7 +24,7 @@ export class Sidebar {
     @Input() toolbarSource!: ToolbarSource
     @Input() sidebarSource!: SidebarSource
 
-    championLevel: number = 1;
+    @Output() championLevel = new EventEmitter<number>()
 
     ngOnInit(): void {
         this.communicationService.toolbarClicked$
@@ -40,6 +40,7 @@ export class Sidebar {
                     this.selectedItems?.update(x => {
                         const map = new Map(x)
                         map.set(item.id, item as Item)
+                        console.log(item)
                         return map
                     })
                 }

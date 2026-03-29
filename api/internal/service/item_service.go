@@ -67,7 +67,6 @@ func (itemService ItemService) parseItemDescription(item *model.Item) {
 }
 
 func (itemService ItemService) GetItems() (*[]model.Item, error) {
-	itemService.audit.Info("Requesting Items from ddragon portal")
 	resp, err := http.Get("https://ddragon.leagueoflegends.com/cdn/" + itemService.version + "/data/en_US/item.json")
 	if err != nil {
 		itemService.audit.Warn("Error fetching item data - %v", err)
@@ -84,7 +83,7 @@ func (itemService ItemService) GetItems() (*[]model.Item, error) {
 	var items []model.Item
 	for key, item := range itemData.Data {
 		item.ID = key
-		if slices.Contains(item.Tags, "Damage") || slices.Contains(item.Tags, "SpellDamage") {
+		if slices.Contains(item.Tags, "Damage") || slices.Contains(item.Tags, "Armor") {
 			itemService.parseItemDescription(&item)
 			items = append(items, item)
 		}
@@ -93,7 +92,6 @@ func (itemService ItemService) GetItems() (*[]model.Item, error) {
 }
 
 func (itemService ItemService) GetItemById(id string) (*model.Item, error) {
-	itemService.audit.Info("Requesting Items from ddragon portal")
 	resp, err := http.Get("https://ddragon.leagueoflegends.com/cdn/" + itemService.version + "/data/en_US/item.json")
 	if err != nil {
 		itemService.audit.Warn("Error fetching item data - %v", err)

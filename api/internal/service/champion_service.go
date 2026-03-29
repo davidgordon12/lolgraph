@@ -24,7 +24,6 @@ func NewChampionService(a *a.Audit) *ChampionService {
 }
 
 func (championService ChampionService) GetChampions() (*[]model.Champion, error) {
-	championService.audit.Info("Requesting Champions from ddragon portal")
 	resp, err := http.Get("https://ddragon.leagueoflegends.com/cdn/" + championService.version + "/data/en_US/champion.json")
 	if err != nil {
 		championService.audit.Warn("Error fetching champion data - %v", err)
@@ -47,7 +46,6 @@ func (championService ChampionService) GetChampions() (*[]model.Champion, error)
 }
 
 func (championService ChampionService) GetChampionById(id string) (*model.Champion, error) {
-	championService.audit.Info("Requesting Champions from ddragon portal")
 	resp, err := http.Get("https://ddragon.leagueoflegends.com/cdn/" + championService.version + "/data/en_US/champion.json")
 	if err != nil {
 		championService.audit.Warn("Error fetching champion data - %v", err)

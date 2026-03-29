@@ -30,7 +30,7 @@ func (imageService ImageService) GetImage(w http.ResponseWriter, r *http.Request
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		imageService.audit.Info("Image not found - %s - %s (Status: %d %s)", resource, name, resp.StatusCode, resp.Status)
+		imageService.audit.Warn("Image not found - %s - %s (Status: %d %s)", resource, name, resp.StatusCode, resp.Status)
 		w.WriteHeader(resp.StatusCode)
 		p := []byte{}
 		_, _ = resp.Body.Read(p)

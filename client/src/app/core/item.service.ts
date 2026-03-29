@@ -16,8 +16,21 @@ export class ItemService {
             }
         }).then(response => response.json(), rej => { return [] })
             .then((items: Item[]) => {
-                items.forEach((item) => item.resource = "item")
-                return items
+                const seenNames = new Set<string>()
+                const uniqueItems: Item[] = []
+
+                items.forEach((item) => {
+                    item.resource = "item"
+
+                    if (seenNames.has(item.name)) {
+                        return
+                    }
+
+                    seenNames.add(item.name)
+                    uniqueItems.push(item)
+                })
+
+                return uniqueItems
             });
 
         return response

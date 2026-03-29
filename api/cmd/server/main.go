@@ -3,6 +3,7 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"os"
 	"time"
 
@@ -28,6 +29,7 @@ func main() {
 
 	router.Use(gin.Recovery())
 	router.Use(middleware.RequestMetricsMiddleware())
+	router.Use(middleware.LoggingMiddleware(audit))
 
 	// Configure CORS middleware
 	config := cors.DefaultConfig()
@@ -44,8 +46,12 @@ func main() {
 	itemHandler := handler.NewItemHandler(audit)
 	imageHandler := handler.NewImageHandler(audit)
 
+	// Handle the favicon.ico request
+	router.GET("/favicon.ico", func(c *gin.Context) {
+		c.Status(http.StatusNoContent)
+	})
+
 	api.RegisterRoutes(router, championHandler, itemHandler, imageHandler)
 
-	audit.Info("Starting server on port :8080")
 	router.Run(":8080")
 }

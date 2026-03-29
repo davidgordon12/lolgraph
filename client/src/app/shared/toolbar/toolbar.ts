@@ -1,26 +1,39 @@
-import { Component, inject, Input, input, signal } from '@angular/core';
+import { Component, computed, inject, Input, signal } from '@angular/core';
 import { Model } from '../../model/model';
 import { CommunicationService } from '../../core/communication.service';
 import { ItemViewmodel } from '../item/item';
 import { SidebarSource, ToolbarEvent, ToolbarSource } from '../types';
 import { filter } from 'rxjs';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-toolbar',
-    imports: [ItemViewmodel],
+    imports: [ItemViewmodel, FormsModule],
     templateUrl: './toolbar.html',
     styleUrl: './toolbar.css'
 })
 export class Toolbar {
-    @Input() items!: Model[]
     @Input() toolbarSource!: ToolbarSource
     @Input() sidebarSource!: SidebarSource
     private communicationService = inject(CommunicationService)
+    private itemsSignal = signal<Model[]>([])
+
+    @Input() set items(value: Model[] | null | undefined) {
+        this.itemsSignal.set(value ?? [])
+    }
 
     allyChampionToolbar: HTMLElement | null = null;
     enemyChampionToolbar: HTMLElement | null = null;
     allyItemToolbar: HTMLElement | null = null;
     enemyItemToolbar: HTMLElement | null = null;
+    searchTerm = signal('')
+    filteredItems = computed(() => {
+        const term = this.searchTerm().trim().toLowerCase()
+        const items = this.itemsSignal()
+        if (!term) return items
+
+        return items.filter(item => item.name.toLowerCase().includes(term))
+    })
 
     ngAfterViewInit(): void {
         this.allyChampionToolbar = document.getElementById('ally-champion-toolbar');
@@ -38,20 +51,24 @@ export class Toolbar {
                         if (this.sidebarSource == 'AllySidebar') {
                             this.allyItemToolbar!.style.display = 'none'
                             this.allyChampionToolbar!.style.display = 'block'
+                            this.searchTerm.set('')
                         }
                         if (this.sidebarSource == 'EnemySidebar') {
                             this.enemyItemToolbar!.style.display = 'none'
                             this.enemyChampionToolbar!.style.display = 'block'
+                            this.searchTerm.set('')
                         }
                         break
                     case 'Items':
                         if (this.sidebarSource == 'AllySidebar') {
                             this.allyItemToolbar!.style.display = 'block'
                             this.allyChampionToolbar!.style.display = 'none'
+                            this.searchTerm.set('')
                         }
                         if (this.sidebarSource == 'EnemySidebar') {
                             this.enemyItemToolbar!.style.display = 'block'
                             this.enemyChampionToolbar!.style.display = 'none'
+                            this.searchTerm.set('')
                         }
                         break
                     case 'Selected':
