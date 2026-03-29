@@ -1,8 +1,37 @@
-<div class="flex flex-col">
-    <p (click)="onItemClicked('Champions')"> "Champions" </p>
-    <p (click)="onItemClicked('Items')"> "Items" </p>
+<div class="flex flex-col gap-4 p-2">
+    <div class="flex flex-col gap-2">
+        <button
+            type="button"
+            class="group relative flex h-10 w-10 items-center justify-center rounded-md border border-gray-700 bg-gray-900 text-gray-200 transition hover:border-blue-400 hover:text-blue-300"
+            (click)="onItemClicked('Champions')"
+            title="Champions"
+            aria-label="Open champion picker">
+            <svg viewBox="0 0 24 24" class="h-5 w-5 fill-none stroke-current" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="8" r="3.5" />
+                <path d="M5 20a7 7 0 0 1 14 0" />
+            </svg>
+            <span class="pointer-events-none absolute left-full top-1/2 ml-3 -translate-y-1/2 rounded-md bg-gray-950 px-2 py-1 text-xs text-white opacity-0 shadow-lg transition group-hover:opacity-100">
+                Champions
+            </span>
+        </button>
+        <button
+            type="button"
+            class="group relative flex h-10 w-10 items-center justify-center rounded-md border border-gray-700 bg-gray-900 text-gray-200 transition hover:border-blue-400 hover:text-blue-300"
+            (click)="onItemClicked('Items')"
+            title="Items"
+            aria-label="Open item picker">
+            <svg viewBox="0 0 24 24" class="h-5 w-5 fill-none stroke-current" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 4 20 10" />
+                <path d="m13 5 6 6" />
+                <path d="M11 7 4 14l-1 4 4-1 7-7" />
+                <path d="m10 8 6 6" />
+            </svg>
+            <span class="pointer-events-none absolute left-full top-1/2 ml-3 -translate-y-1/2 rounded-md bg-gray-950 px-2 py-1 text-xs text-white opacity-0 shadow-lg transition group-hover:opacity-100">
+                Items
+            </span>
+        </button>
+    </div>
     <div>
-        <p (click)="onItemClicked('Selected')">"Selected"</p>
         @if(selectedChampion()) {
         <div class="relative w-max">
             <app-item [item]="selectedChampion()" />

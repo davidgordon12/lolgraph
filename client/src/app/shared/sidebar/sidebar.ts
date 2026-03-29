@@ -40,6 +40,7 @@ export class Sidebar {
                     this.selectedItems?.update(x => {
                         const map = new Map(x)
                         map.set(item.id, item as Item)
+                        console.log(item)
                         return map
                     })
                 }
